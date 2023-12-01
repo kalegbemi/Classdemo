@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,9 +22,19 @@ public class JavaStudentService {
         // return ResponseEntity.ok(javaStudentRepository.save(javaStudent))
         return ResponseEntity.ok(javaStudent);
     }
+
+    public List<JavaStudent> saveListOfStudents(List<JavaStudent> javaStudents){
+        //List<JavaStudent> javaStudentList = new ArrayList<>();
+        for(JavaStudent student : javaStudents){
+            javaStudentRepository.save(student);
+        }
+        return javaStudents;
+    }
+
     public ResponseEntity<List<JavaStudent>> getAllStudent(){
         return ResponseEntity.ok(javaStudentRepository.findAll());
     }
+
     public ResponseEntity<JavaStudent> getStudentById(Integer id){
         JavaStudent student = javaStudentRepository.findById(id).orElseThrow
                 (()-> new StudentNotFoundException("Java student not found"));
@@ -57,9 +68,9 @@ public class JavaStudentService {
     }
 
 
-    public String deleteStudentById(Integer id){
+    public ResponseEntity<String> deleteStudentById(int id){
         javaStudentRepository.deleteById(id);
-        return String.format("The Java student with ID %d has been DELETED",id);
+        return new ResponseEntity<>("The Java student has been DELETED successfully", HttpStatusCode.valueOf(200));
     }
     /*@DeleteMapping("/students/{id}")
     public ResponseEntity<String> deleteJavaStudent(@PathVariable int id){

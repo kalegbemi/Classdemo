@@ -30,6 +30,10 @@ public class JavaStudentController {
         // connect to the JavaStudentRepository interface.
         return ResponseEntity.ok(javaStudentService.saveStudent(javaStudent).getBody());
     }
+    @PostMapping(path = "savelist")
+    public List<JavaStudent> saveListOfStudent(@RequestBody List<JavaStudent> javaStudents){
+        return javaStudentService.saveListOfStudents(javaStudents);
+    }
 
     @GetMapping("/student")
     //@GetMapping(value = "/student", produces = MediaType.APPLICATION_PDF)
@@ -60,22 +64,23 @@ public class JavaStudentController {
     }
 
     @PutMapping("/students/{id}")
-    public JavaStudent updateStudentsInfo(@PathVariable @Valid Integer id, @RequestBody JavaStudent javaStudent){
-        JavaStudent toBeUpdated = javaStudentService.getStudentById(id).getBody();
+    public JavaStudent updateStudentsInfo( @PathVariable Integer id, @RequestBody @Valid JavaStudent javaStudent){
+       /* JavaStudent toBeUpdated = javaStudentService.getStudentById(id).getBody();
         //update variables
-        /*assert toBeUpdated != null;
+        assert toBeUpdated != null;
         toBeUpdated.setFirstName(javaStudent.getFirstName());
         toBeUpdated.setLastName(javaStudent.getLastName());
         toBeUpdated.setAge(javaStudent.getAge());
         toBeUpdated.setCourse(javaStudent.getCourse());
         toBeUpdated.setSex(javaStudent.getSex());
-        toBeUpdated.setEmail(javaStudent.getEmail());*/
+        toBeUpdated.setEmail(javaStudent.getEmail());
 
-        return javaStudentService.saveStudent(toBeUpdated).getBody();
+        return javaStudentService.saveStudent(toBeUpdated).getBody();*/
+        return javaStudentService.updateStudentsInfo(id, javaStudent);
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteStudentById(@PathVariable Integer id){
+    public ResponseEntity<String> deleteStudentById(@PathVariable Integer id){
         return javaStudentService.deleteStudentById(id);
        // return String.format("The Java student with ID %d has been DELETED",id);
     }
@@ -121,13 +126,18 @@ public class JavaStudentController {
 
         JavaStudentResource javaStudentResource = new JavaStudentResource();
         javaStudentResource.setJavaStudent(javaStudent);
+        assert javaStudent != null;
         Link getById = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(JavaStudentController.class)
                 .getStudentById(id)).withRel("getStudentById");
         Link deleteById = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(JavaStudentController.class)
                 .deleteStudentById(id)).withRel("deleteById");
         Link allStudents = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(JavaStudentController.class)
                 .getAllStudent()).withRel("allStudents");
-        javaStudentResource.add(getById, deleteById, allStudents);
+        Link getByFirstName = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(JavaStudentController.class)
+                .getStudentByFirstname(javaStudent.getFirstName())).withRel("getbyfirstname");
+        Link getByEmail = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(JavaStudentController.class)
+                .getByStudentByEmail(javaStudent.getEmail())).withRel("getbyemail");
+        javaStudentResource.add(getById, deleteById, allStudents, getByFirstName, getByEmail);
         return new ResponseEntity<>(javaStudentResource, HttpStatus.OK);
     }
 
