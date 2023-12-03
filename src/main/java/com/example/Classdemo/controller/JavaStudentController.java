@@ -89,13 +89,16 @@ public class JavaStudentController {
         javaStudentRepository.deleteById(id);
         return new ResponseEntity<>("Successfully deleted", HttpStatus.OK);
     }*/
-    /*@GetMapping("/resources/{id}")
-    public ResponseEntity<JavaStudentResource> getJavaStudentResource(@PathVariable int id){
-        JavaStudent javaStudent = getStudentById(id).getBody();
 
+   /* @GetMapping("/resources/name/{firstName}")
+    public ResponseEntity<JavaStudentResource> getResourceByFirstName(@PathVariable String firstName){
+        JavaStudent javaStudent = getStudentByFirstname(firstName);
         JavaStudentResource javaStudentResource = new JavaStudentResource();
         javaStudentResource.setJavaStudent(javaStudent);
-        Link getbyId = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(JavaStudentController.class)
+
+        Link getByFirstname = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(JavaStudentController.class)
+                .getStudentByFirstname(firstName)).withRel("getByFirstName");
+Link getbyId = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(JavaStudentController.class)
                 .getStudentById(id)).withRel("getstudentbyid");
         Link deletebyid = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(JavaStudentController.class)
                 .deleteStudentById(id)).withSelfRel();
@@ -106,19 +109,6 @@ public class JavaStudentController {
         javaStudentResource.add(getbyId, deletebyid, updateById, getALL);
         return new ResponseEntity<>(javaStudentResource, HttpStatus.OK);
     }*/
-   /* @GetMapping("/resources/name/{firstName}")
-    public JavaStudentResource getResourceByFirstName(String firstName){
-        List<JavaStudent> javaStudent = getStudentByFirstname(firstName);
-        JavaStudentResource javaStudentResource = new JavaStudentResource();
-
-        Link getByFirstname = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(JavaStudentController.class)
-                .getStudentByFirstname(firstName)).withRel("getByFirstName");
-
-        javaStudentResource.add(getByFirstname);
-        return new JavaStudentResource();
-    }*/
-//@Autowired
-   // private JavaStudentResource javaStudentResource;
 
     @GetMapping("/resources/test/{id}")
     public ResponseEntity<JavaStudentResource> getJavaStudentResource(@PathVariable Integer id){

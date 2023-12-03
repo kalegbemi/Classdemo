@@ -1,5 +1,6 @@
 package com.example.Classdemo.Exceptions;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -35,3 +36,4 @@ public class GlobalExceptionHandler {
     }
 
 }
+
